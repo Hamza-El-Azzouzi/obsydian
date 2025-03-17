@@ -5,7 +5,7 @@ export default {
     plugins: [cleanup()],
     output: [
         {
-            file: 'dist/aura.js',
+            file: 'dist/obsydian.js',
             format: 'esm',
             plugins: [filesize()],
         },
