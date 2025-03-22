@@ -15,12 +15,14 @@ export function o(tag, props = {}, children = []) {
 }
 
 function mapTextNodes(children) {
+    console.log("map Text node func", children)
     return children.map((child) =>
         typeof child === 'string' ? oString(child) : child
     )
 }
 
 export function oString(str) {
+    console.log("ostring func", str)
     return { type: DOM_TYPES.TEXT, value: str }
 }
 export function oFragment(vNodes) {
@@ -28,4 +30,18 @@ export function oFragment(vNodes) {
         type: DOM_TYPES.FRAGMENT,
         children: mapTextNodes(withoutNulls(vNodes)),
     }
+}
+export function extractChildren(vdom) {
+    if (vdom.children == null) {
+        return []
+    }
+    const children = []
+    for (const child of vdom.children) {
+        if (child.type === DOM_TYPES.FRAGMENT) {
+            children.push(...extractChildren(child, children))
+        } else {
+            children.push(child)
+        }
+    }
+    return children
 }

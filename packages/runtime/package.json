@@ -1,7 +1,9 @@
 {
   "name": "obsydian",
-  "version": "1.0.1",
-  "main": "./src/index.js",
+  "version": "2.0.1",
+  "main": "dist/obsydian.js",
+  "module": "dist/obsydian.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepack": "npm run build",

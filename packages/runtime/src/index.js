@@ -1,9 +1,2 @@
-import { o } from "./o.js";
-const element = o(
-    "h1",
-    {class:"title"},
-    ["obsydian"]
-)
-console.log(element)
-const container = document.getElementById("root");
-container.append(element)
+export {createApp} from './app.js'
+export {o, oString,oFragment} from './o.js'
