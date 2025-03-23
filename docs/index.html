@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsydian - Lightweight JS Framework</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="obsidian-icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">Obsydian</a>
+            <ul class="nav-links">
+                <li><a href="#getting-started">Get Started</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li>
+                    <a href="https://github.com/hamza-el-azzouzi/obsydian" class="github-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Obsydian</h1>
+            <p class="lead">A lightweight JavaScript framework for building reactive user interfaces</p>
+            <div class="cta-buttons">
+                <a href="#getting-started" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/hamza-el-azzouzi/obsydian" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="features" class="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Virtual DOM</h3>
+                    <p>Efficient updates with virtual DOM diffing</p>
+                </div>
+                <div class="feature-card">
+                    <h3>State Management</h3>
+                    <p>Simple and predictable state management with reducers</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Component-Based</h3>
+                    <p>Build UIs with reusable components</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Lightweight</h3>
+                    <p>Small footprint (~5KB minified)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="getting-started" class="getting-started">
+            <h2>Getting Started</h2>
+            <div class="installation-options">
+                <div class="install-card">
+                    <h3>CDN</h3>
+                    <pre><code>import { createApp, o, oFragment } from 'https://unpkg.com/obsydian@2.0.1'</code></pre>
+                </div>
+                <div class="install-card">
+                    <h3>NPM</h3>
+                    <pre><code>npm install obsydian</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="examples">
+            <h2>Quick Example</h2>
+            <div class="concept-card">
+                <pre><code>import { createApp, o, oFragment } from 'obsydian'
+
+const state = { count: 0 }
+
+const reducers = {
+    "increment": (state) => ({ ...state, count: state.count + 1 }),
+    "decrement": (state) => ({ ...state, count: state.count - 1 })
+}
+
+function Counter(state, emit) {
+    return oFragment([
+        o('button', { on: { click: () => emit('decrement') }}, ['-']),
+        o('span', {}, [state.count]),
+        o('button', { on: { click: () => emit('increment') }}, ['+'])
+    ])
+}
+
+createApp({ state, reducers, view: Counter }).mount(document.body)</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Obsydian. MIT License.</p>
+        </div>
+    </footer>
+</body>
+</html>

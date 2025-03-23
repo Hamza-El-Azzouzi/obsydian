@@ -2,7 +2,7 @@ import { destroyDOM } from './destroy-dom.js'
 import { addEventListener } from './events.js'
 import { mountDOM } from './mount-dom.js'
 import { areNodesEqual } from './nodes-equal.js'
-import { DOM_TYPES,extractChildren } from './o.js'
+import { DOM_TYPES, extractChildren } from './o.js'
 import {
     removeAttribute,
     setAttribute,
@@ -16,11 +16,11 @@ import {
 } from './utils/arrays.js'
 import { objectsDiff } from './utils/objects.js'
 import { isNotBlankOrEmptyString } from './utils/strings.js'
-export function patchDOM(oldVdom, newVdom, parentEl) {
+export function patchDOM(oldVdom, newVdom, parentEl, hostComponent = null) {
     if (!areNodesEqual(oldVdom, newVdom)) {
         const index = findIndexInParent(parentEl, oldVdom.el)
         destroyDOM(oldVdom)
-        mountDOM(newVdom, parentEl, index)
+        mountDOM(newVdom, parentEl, index,hostComponent)
         return newVdom
     }
     newVdom.el = oldVdom.el
@@ -30,11 +30,11 @@ export function patchDOM(oldVdom, newVdom, parentEl) {
             return newVdom
         }
         case DOM_TYPES.ELEMENT: {
-            patchElement(oldVdom, newVdom)
+            patchElement(oldVdom, newVdom,hostComponent)
             break
         }
     }
-    patchChildren(oldVdom, newVdom)
+    patchChildren(oldVdom, newVdom, hostComponent)
     return newVdom
 }
 function findIndexInParent(parentEl, el) {
@@ -53,7 +53,7 @@ function patchText(oldVdom, newVdom) {
     }
 }
 
-function patchElement(oldVdom, newVdom) {
+function patchElement(oldVdom, newVdom,hostComponent) {
     const el = oldVdom.el
     const {
         class: oldClass,
@@ -71,7 +71,7 @@ function patchElement(oldVdom, newVdom) {
     patchAttrs(el, oldAttrs, newAttrs)
     patchClasses(el, oldClass, newClass)
     patchStyles(el, oldStyle, newStyle)
-    newVdom.listeners = patchEvents(el, oldListeners, oldEvents, newEvents)
+    newVdom.listeners = patchEvents(el, oldListeners, oldEvents, newEvents,hostComponent)
 }
 function patchAttrs(el, oldAttrs, newAttrs) {
     const { added, removed, updated } = objectsDiff(oldAttrs, newAttrs)
@@ -116,7 +116,8 @@ function patchEvents(
     el,
     oldListeners = {},
     oldEvents = {},
-    newEvents = {}
+    newEvents = {},
+    hostComponent
 ) {
     const { removed, added, updated } =
         objectsDiff(oldEvents, newEvents)
@@ -126,12 +127,12 @@ function patchEvents(
     const addedListeners = {}
     for (const eventName of added.concat(updated)) {
         const listener =
-            addEventListener(eventName, newEvents[eventName], el)
+            addEventListener(eventName, newEvents[eventName], el,hostComponent)
         addedListeners[eventName] = listener
     }
     return addedListeners
 }
-function patchChildren(oldVdom, newVdom) {
+function patchChildren(oldVdom, newVdom, hostComponent) {
     const oldChildren = extractChildren(oldVdom)
     const newChildren = extractChildren(newVdom)
     const parentEl = oldVdom.el
@@ -142,9 +143,10 @@ function patchChildren(oldVdom, newVdom) {
     )
     for (const operation of diffSeq) {
         const { originalIndex, index, item } = operation
+        const offset = hostComponent?.offset ?? 0
         switch (operation.op) {
             case ARRAY_DIFF_OP.ADD: {
-                mountDOM(item, parentEl, index)
+                mountDOM(item, parentEl, index + offset, hostComponent)
                 break
             }
             case ARRAY_DIFF_OP.REMOVE: {
@@ -157,11 +159,11 @@ function patchChildren(oldVdom, newVdom) {
                 const el = oldChild.el
                 const elAtTargetIndex = parentEl.childNodes[index]
                 parentEl.insertBefore(el, elAtTargetIndex)
-                patchDOM(oldChild, newChild, parentEl)
+                patchDOM(oldChild, newChild, parentEl, hostComponent)
                 break
             }
             case ARRAY_DIFF_OP.NOOP: {
-                patchDOM(oldChildren[originalIndex], newChildren[index], parentEl)
+                patchDOM(oldChildren[originalIndex], newChildren[index], parentEl, hostComponent)
                 break
             }
         }

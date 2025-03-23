@@ -1,0 +1,329 @@
+:root {
+    --obsydian-black: #1a1a1a;
+    --obsydian-shine: #2d2d2d;
+    --obsydian-accent: #646cff;
+    --obsydian-accent-hover: #535bf2;
+    --obsydian-glow: rgba(100, 108, 255, 0.08);
+    --border-color: rgba(75, 75, 75, 0.5);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(180deg, var(--obsydian-black) 0%, #000000 100%);
+    color: #e5e5e5;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Navbar */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 50;
+  }
+  
+  .navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--obsydian-accent), #9089fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .logo:hover {
+    opacity: 0.8;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    list-style: none;
+  }
+  
+  .nav-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .nav-links a:hover {
+    color: #ffffff;
+  }
+  
+  .github-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s;
+  }
+  
+  .github-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Hero Section */
+  .hero {
+    padding: 8rem 0 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--obsydian-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .hero .container {
+    position: relative;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, #ffffff, #d1d5db, #9ca3af);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .lead {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    color: #9ca3af;
+    margin-bottom: 3rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background-color: var(--obsydian-accent);
+    color: white;
+    box-shadow: 0 8px 16px rgba(100, 108, 255, 0.2);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--obsydian-accent-hover);
+  }
+  
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #d1d5db;
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Main Content */
+  main {
+    padding: 4rem 0;
+  }
+  
+  section {
+    margin-bottom: 6rem;
+  }
+  
+  section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    background: linear-gradient(to right, #ffffff, #9ca3af);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Features Grid */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+  }
+  
+  .feature-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+  
+  .feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--obsydian-accent);
+  }
+  
+  .feature-card p {
+    color: #9ca3af;
+  }
+  
+  /* Installation Section */
+  .installation-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .install-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+  }
+  
+  .install-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--obsydian-accent);
+  }
+  
+  /* Code Blocks */
+  pre {
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+  }
+  
+  code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    color: #d1d5db;
+  }
+  
+  /* Example Section */
+  .concept-card {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+  }
+  
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    text-align: center;
+    color: #6b7280;
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 9999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+  
+  /* Smooth Scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .nav-links {
+      gap: 1rem;
+    }
+  
+    .cta-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .btn {
+      text-align: center;
+    }
+  
+    .installation-options {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .navbar .container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
