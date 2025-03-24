@@ -1,8 +1,9 @@
 import { DOM_TYPES } from './o.js'
 import { setAttributes } from './attributes.js'
 import { addEventListeners } from './events.js'
+import { extractPropsAndEvents } from './utils/props.js'
 
-export function mountDOM(vdom, parentEl, index,hostComponent=null) {
+export function mountDOM(vdom, parentEl, index, hostComponent = null) {
 
     if (typeof vdom === 'string') {
         createTextNode({ type: DOM_TYPES.TEXT, value: vdom }, parentEl)
@@ -15,11 +16,15 @@ export function mountDOM(vdom, parentEl, index,hostComponent=null) {
             break
         }
         case DOM_TYPES.ELEMENT: {
-            createElementNode(vdom, parentEl, index,hostComponent)
+            createElementNode(vdom, parentEl, index, hostComponent)
             break
         }
         case DOM_TYPES.FRAGMENT: {
-            createFragmentNodes(vdom, parentEl, index,hostComponent)
+            createFragmentNodes(vdom, parentEl, index, hostComponent)
+            break
+        }
+        case DOM_TYPES.COMPONENT: {
+            createComponentNode(vdom, parentEl, index, hostComponent)
             break
         }
         default: {
@@ -36,25 +41,25 @@ function createTextNode(vdom, parentEl, index) {
     insert(textNode, parentEl, index)
 }
 
-function createFragmentNodes(vdom, parentEl, index,hostComponent) {
+function createFragmentNodes(vdom, parentEl, index, hostComponent) {
     const { children } = vdom
     vdom.el = parentEl
-    children.forEach((child, i) => mountDOM(child, parentEl, index ? index + i : null,hostComponent))
+    children.forEach((child, i) => mountDOM(child, parentEl, index ? index + i : null, hostComponent))
 }
 
-function createElementNode(vdom, parentEl, index,hostComponent) {
+function createElementNode(vdom, parentEl, index, hostComponent) {
     const { tag, props, children } = vdom
     const element = document.createElement(tag)
-    addProps(element, props, vdom,hostComponent)
+    addProps(element, props, vdom, hostComponent)
     vdom.el = element
-    children.forEach((child) => mountDOM(child, element,null,hostComponent))
+    children.forEach((child) => mountDOM(child, element, null, hostComponent))
     // parentEl.append(element)
     insert(element, parentEl, index)
 }
 
-function addProps(el, props, vdom,hostComponent) {
+function addProps(el, props, vdom, hostComponent) {
     const { on: events, ...attrs } = props
-    vdom.listeners = addEventListeners(events, el,hostComponent)
+    vdom.listeners = addEventListeners(events, el, hostComponent)
     setAttributes(el, attrs)
 }
 
@@ -75,4 +80,12 @@ function insert(el, parentEl, index) {
     } else {
         parentEl.insertBefore(el, children[index])
     }
+}
+function createComponentNode(vdom, parentEl, index, hostComponent) {
+    const Component = vdom.tag
+    const { props, events } = extractPropsAndEvents(vdom)
+    const component = new Component(props, events, hostComponent)
+    component.mount(parentEl, index)
+    vdom.component = component
+    vdom.el = component.firstElement
 }

@@ -14,13 +14,14 @@ import {
     arraysDiffSequence,
     ARRAY_DIFF_OP
 } from './utils/arrays.js'
+import { extractPropsAndEvents } from './utils/props.js'
 import { objectsDiff } from './utils/objects.js'
 import { isNotBlankOrEmptyString } from './utils/strings.js'
 export function patchDOM(oldVdom, newVdom, parentEl, hostComponent = null) {
     if (!areNodesEqual(oldVdom, newVdom)) {
         const index = findIndexInParent(parentEl, oldVdom.el)
         destroyDOM(oldVdom)
-        mountDOM(newVdom, parentEl, index,hostComponent)
+        mountDOM(newVdom, parentEl, index, hostComponent)
         return newVdom
     }
     newVdom.el = oldVdom.el
@@ -30,7 +31,11 @@ export function patchDOM(oldVdom, newVdom, parentEl, hostComponent = null) {
             return newVdom
         }
         case DOM_TYPES.ELEMENT: {
-            patchElement(oldVdom, newVdom,hostComponent)
+            patchElement(oldVdom, newVdom, hostComponent)
+            break
+        }
+        case DOM_TYPES.COMPONENT: {
+            patchComponent(oldVdom, newVdom)
             break
         }
     }
@@ -53,7 +58,7 @@ function patchText(oldVdom, newVdom) {
     }
 }
 
-function patchElement(oldVdom, newVdom,hostComponent) {
+function patchElement(oldVdom, newVdom, hostComponent) {
     const el = oldVdom.el
     const {
         class: oldClass,
@@ -71,7 +76,7 @@ function patchElement(oldVdom, newVdom,hostComponent) {
     patchAttrs(el, oldAttrs, newAttrs)
     patchClasses(el, oldClass, newClass)
     patchStyles(el, oldStyle, newStyle)
-    newVdom.listeners = patchEvents(el, oldListeners, oldEvents, newEvents,hostComponent)
+    newVdom.listeners = patchEvents(el, oldListeners, oldEvents, newEvents, hostComponent)
 }
 function patchAttrs(el, oldAttrs, newAttrs) {
     const { added, removed, updated } = objectsDiff(oldAttrs, newAttrs)
@@ -127,7 +132,7 @@ function patchEvents(
     const addedListeners = {}
     for (const eventName of added.concat(updated)) {
         const listener =
-            addEventListener(eventName, newEvents[eventName], el,hostComponent)
+            addEventListener(eventName, newEvents[eventName], el, hostComponent)
         addedListeners[eventName] = listener
     }
     return addedListeners
@@ -168,4 +173,11 @@ function patchChildren(oldVdom, newVdom, hostComponent) {
             }
         }
     }
+}
+function patchComponent(oldVdom, newVdom) {
+    const { component } = oldVdom
+    const { props } = extractPropsAndEvents(newVdom)
+    component.updateProps(props)
+    newVdom.component = component
+    newVdom.el = component.firstElement
 }
