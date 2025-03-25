@@ -31,3 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+  
+    menuToggle?.addEventListener('click', () => {
+      navLinks?.classList.toggle('active');
+    });
+  
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.navbar')) {
+        navLinks?.classList.remove('active');
+      }
+    });
+  
+    // Close menu when resizing to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        navLinks?.classList.remove('active');
+      }
+    });
+  });

@@ -24,7 +24,14 @@
   .container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 2rem;
+    width: 100%;
+  }
+  
+  @media (max-width: 1024px) {
+    .container {
+      max-width: 900px;
+    }
   }
   
   /* Navbar */
@@ -94,7 +101,7 @@
   
   /* Hero Section */
   .hero {
-    padding: 8rem 0 6rem;
+    padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 8vw, 6rem);
     position: relative;
     overflow: hidden;
   }
@@ -113,37 +120,43 @@
   }
   
   .hero h1 {
-    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-size: clamp(2rem, 6vw, 4.5rem);
     font-weight: 700;
     margin-bottom: 1.5rem;
     background: linear-gradient(to right, #ffffff, #d1d5db, #9ca3af);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    line-height: 1.2;
   }
   
   .lead {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    font-size: clamp(1rem, 3vw, 1.5rem);
     color: #9ca3af;
     margin-bottom: 3rem;
     max-width: 42rem;
     margin-left: auto;
     margin-right: auto;
+    padding: 0 1rem;
   }
   
   .cta-buttons {
     display: flex;
-    gap: 1rem;
+    gap: clamp(0.5rem, 2vw, 1rem);
     justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 1rem;
   }
   
   .btn {
-    padding: 0.75rem 1.5rem;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
     border-radius: 9999px;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     text-decoration: none;
     transition: all 0.2s;
+    min-width: 120px;
+    text-align: center;
   }
   
   .btn-primary {
@@ -188,8 +201,9 @@
   /* Features Grid */
   .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1rem, 3vw, 1.5rem);
+    padding: 0 1rem;
   }
   
   .feature-card {
@@ -217,10 +231,9 @@
   
   /* Installation Section */
   .installation-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-bottom: 3rem;
+    padding: 0 1rem;
   }
   
   .install-card {
@@ -228,6 +241,7 @@
     border-radius: 1rem;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--border-color);
+    margin-top: 20px;
   }
   
   .install-card h3 {
@@ -241,15 +255,23 @@
   pre {
     border-radius: 0.5rem;
     background: rgba(0, 0, 0, 0.5);
-    padding: 1rem;
+    padding: 1.5rem;
     overflow-x: auto;
     border: 1px solid var(--border-color);
+    margin: 1rem -1rem;
+    font-size: clamp(0.8rem, 2vw, 0.875rem);
   }
   
   code {
     font-family: 'Fira Code', 'Consolas', monospace;
     font-size: 0.875rem;
     color: #d1d5db;
+  }
+  
+  @media (max-width: 640px) {
+    pre {
+      border-radius: 0;
+    }
   }
   
   /* Example Section */
@@ -264,7 +286,7 @@
   /* Footer */
   .footer {
     border-top: 1px solid var(--border-color);
-    padding: 2rem 0;
+    padding: clamp(1.5rem, 4vw, 2rem) 1rem;
     text-align: center;
     color: #6b7280;
   }
@@ -290,6 +312,19 @@
   /* Smooth Scrolling */
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 1024px) {
+    html {
+      font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
   }
   
   /* Responsive Design */
@@ -310,6 +345,37 @@
     .installation-options {
       grid-template-columns: 1fr;
     }
+  
+    .navbar {
+      position: sticky;
+    }
+  
+    .navbar .container {
+      padding: 1rem;
+    }
+  
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+  
+    .nav-links.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  
+    .menu-toggle {
+      display: block;
+      cursor: pointer;
+    }
   }
   
   @media (max-width: 640px) {
@@ -327,79 +393,109 @@
       grid-template-columns: 1fr;
     }
   }
-  /* ...existing code... */
-
-/* Routing Section */
-.routing {
-  padding: 4rem 0;
-}
-
-.routing .concept-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 1rem;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  transition: background-color 0.2s;
-}
-
-.routing .concept-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.routing .concept-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--obsydian-accent);
-}
-
-.routing pre {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  overflow-x: auto;
-}
-
-.routing code {
-  font-family: 'Fira Code', 'Consolas', monospace;
-  font-size: 0.875rem;
-  color: #d1d5db;
-  line-height: 1.5;
-}
-
-.feature-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.feature-list li {
-  padding: 0.5rem 0;
-  color: #9ca3af;
-  display: flex;
-  align-items: center;
-}
-
-.feature-list li:before {
-  content: "•";
-  color: var(--obsydian-accent);
-  font-weight: bold;
-  margin-right: 0.5rem;
-}
-
-/* Responsive Design for Routing */
-@media (max-width: 768px) {
+  
+  /* Routing Section */
+  .routing {
+    padding: clamp(2rem, 5vw, 4rem) 1rem;
+  }
+  
   .routing .concept-card {
-    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: clamp(1rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+    transition: background-color 0.2s;
+  }
+  
+  .routing .concept-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+  
+  .routing .concept-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--obsydian-accent);
   }
   
   .routing pre {
-    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 1rem -1rem;
   }
   
   .routing code {
-    font-size: 0.8rem;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    color: #d1d5db;
+    line-height: 1.5;
   }
-}
+  
+  @media (max-width: 640px) {
+    .routing .concept-card {
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+    }
+  }
+  
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .feature-list li {
+    padding: 0.75rem 0;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+  
+  .feature-list li:before {
+    content: "•";
+    color: var(--obsydian-accent);
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  /* Mobile Menu Toggle */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+  }
+  
+  /* Print Media Query */
+  @media print {
+    .navbar {
+      position: static;
+      border: none;
+    }
+  
+    .hero::before {
+      display: none;
+    }
+  
+    .btn {
+      border: 1px solid #000;
+    }
+  
+    pre {
+      border: 1px solid #000;
+      page-break-inside: avoid;
+    }
+  }
