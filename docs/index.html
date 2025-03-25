@@ -15,7 +15,7 @@
             <a href="#" class="logo">Obsydian</a>
             <ul class="nav-links">
                 <li><a href="#getting-started">Get Started</a></li>
-                <li><a href="#docs">Docs</a></li>
+                <li><a href="#routing">Routing</a></li>
                 <li><a href="#examples">Examples</a></li>
                 <li>
                     <a href="https://github.com/hamza-el-azzouzi/obsydian" class="github-link">
@@ -60,6 +60,10 @@
                     <h3>Lightweight</h3>
                     <p>Small footprint (~5KB minified)</p>
                 </div>
+                <div class="feature-card">
+                    <h3>Routing</h3>
+                    <p>Built-in hash-based routing system</p>
+                </div>
             </div>
         </section>
 
@@ -100,11 +104,78 @@ function Counter(state, emit) {
 createApp({ state, reducers, view: Counter }).mount(document.body)</code></pre>
             </div>
         </section>
+
+        <section id="routing" class="routing">
+            <h2>Routing</h2>
+            <div class="concept-card">
+                <h3>Basic Routing</h3>
+                <pre><code>import { createApp, o, HashRouter, oFragment } from 'obsydian'
+
+// Define routes
+const router = new HashRouter([
+  { path: "/", action: () => emit("set-filter", "all") },
+  { path: "/users/:id", action: () => emit("load-user", router.params.id) }
+]);
+
+// Initialize router
+await router.init();</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>Route Navigation</h3>
+                <pre><code>function NavBar(state, emit) {
+  return o("nav", {}, [
+    o("a", { 
+      href: "#/",
+      on: { click: () => router.navigateTo("/") }
+    }, ["Home"]),
+    o("a", { 
+      href: "#/users/123",
+      on: { click: () => router.navigateTo("/users/123") }
+    }, ["User Profile"])
+  ]);
+}</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>TodoMVC Example with Routing</h3>
+                <pre><code>const router = new HashRouter([
+  { path: "/", action: () => emit("set-filter", "all") },
+  { path: "/active", action: () => emit("set-filter", "active") },
+  { path: "/completed", action: () => emit("set-filter", "completed") }
+]);
+
+function FilterNav(state, emit) {
+  return o("ul", { class: "filters" }, [
+    o("li", {}, [
+      o("a", { 
+        href: "#/",
+        class: state.filter === "all" ? "selected" : "",
+        on: { click: () => router.navigateTo("/") }
+      }, ["All"])
+    ]),
+    // ...more filter links
+  ]);
+}</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>Router Features</h3>
+                <ul class="feature-list">
+                    <li>Hash-based routing (#/path)</li>
+                    <li>Route parameters (/users/:id)</li>
+                    <li>Query string support (?q=search)</li>
+                    <li>Navigation methods (navigateTo, back, forward)</li>
+                    <li>Route change subscriptions</li>
+                </ul>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
         <div class="container">
             <p>&copy; 2024 Obsydian. MIT License.</p>
+            <p>By Hamza El Azzouzi.</p>
         </div>
     </footer>
 </body>

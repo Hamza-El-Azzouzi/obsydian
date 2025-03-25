@@ -327,3 +327,79 @@
       grid-template-columns: 1fr;
     }
   }
+  /* ...existing code... */
+
+/* Routing Section */
+.routing {
+  padding: 4rem 0;
+}
+
+.routing .concept-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: background-color 0.2s;
+}
+
+.routing .concept-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.routing .concept-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--obsydian-accent);
+}
+
+.routing pre {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.routing code {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  padding: 0.5rem 0;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+}
+
+.feature-list li:before {
+  content: "•";
+  color: var(--obsydian-accent);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design for Routing */
+@media (max-width: 768px) {
+  .routing .concept-card {
+    padding: 1.5rem;
+  }
+  
+  .routing pre {
+    padding: 1rem;
+  }
+  
+  .routing code {
+    font-size: 0.8rem;
+  }
+}
