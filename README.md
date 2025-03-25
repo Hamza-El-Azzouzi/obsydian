@@ -317,8 +317,6 @@ The app instance provides two main methods:
 
 Check the `/examples` directory for more complex examples including:
 - Todo List Application
-- Counter
-- Form Handling
 
 ## License
 
