@@ -2,6 +2,7 @@ import { destroyDOM } from './destroy-dom.js'
 import { Dispatcher } from './dispatcher.js'
 import { mountDOM } from './mount-dom.js'
 import { patchDOM } from './patch-dom.js'
+import { NoopRouter } from './router.js'
 export function createApp({ state, view, reducers = {} }) {
     let parentEl = null
     let vdom = null

@@ -17,7 +17,7 @@ You can use Obsydian directly via CDN:
 
 ```html
 <script type="module">
-  import { createApp, o, oString, oFragment } from 'https://unpkg.com/obsydian@2.0.1'
+  import { createApp, o, oString, oFragment } from 'https://unpkg.com/obsydian@latest'
 </script>
 ```
 
@@ -159,6 +159,135 @@ function ListView({ items }, emit) {
   )
 }
 ```
+
+### Routing
+
+Obsydian provides a built-in HashRouter for client-side routing. The router uses URL hashes (#) for navigation and supports route parameters.
+
+```javascript
+import { createApp, o, HashRouter, oFragment } from 'obsydian'
+
+// Define routes
+const router = new HashRouter([
+  { path: "/", action: () => emit("set-filter", "all") },
+  { path: "/active", action: () => emit("set-filter", "active") },
+  { path: "/completed", action: () => emit("set-filter", "completed") }
+]);
+
+// Initialize router
+router.init()
+
+// Example TodoMVC implementation with routing
+const state = {
+  todos: [],
+  filter: "all"
+};
+
+const reducers = {
+  "set-filter": (state, filter) => ({
+    ...state,
+    filter
+  })
+};
+
+function App(state, emit) {
+  return oFragment([
+    o("ul", { class: "filters" }, [
+      o("li", {}, [
+        o("a", { 
+          href: "#/", 
+          class: state.filter === "all" ? "selected" : "",
+          on: { click: () => emit("set-filter", "all") }
+        }, ["All"])
+      ]),
+      o("li", {}, [
+        o("a", { 
+          href: "#/active", 
+          class: state.filter === "active" ? "selected" : "",
+          on: { click: () => emit("set-filter", "active") }
+        }, ["Active"])
+      ]),
+      o("li", {}, [
+        o("a", { 
+          href: "#/completed", 
+          class: state.filter === "completed" ? "selected" : "",
+          on: { click: () => emit("set-filter", "completed") }
+        }, ["Completed"])
+      ])
+    ])
+  ]);
+}
+```
+
+#### Router Features
+
+- **Hash-based routing**: Uses URL hashes for navigation (#/path)
+- **Route actions**: Execute functions when routes match
+- **Navigation methods**: 
+  - `router.navigateTo(path)`: Navigate programmatically
+  - `router.back()`: Go to previous route
+  - `router.forward()`: Go to next route
+- **Route subscription**: Listen for route changes
+- **Route parameters**: Extract parameters from URLs
+
+#### Router API
+
+```javascript
+// Create router instance
+const router = new HashRouter([
+  { 
+    path: "/", 
+    action: () => console.log("Home route") 
+  },
+  { 
+    path: "/users/:id", 
+    action: () => console.log("User route") 
+  }
+]);
+
+// Initialize router
+await router.init();
+
+// Subscribe to route changes
+router.subscribe(() => {
+  console.log("Route changed:", router.matchedRoute);
+  console.log("Route params:", router.params);
+});
+
+// Navigation
+router.navigateTo("/users/123");
+router.back();
+router.forward();
+```
+
+#### Route Parameters
+
+The router supports URL parameters and query strings:
+
+```javascript
+// Route with parameters
+const routes = [
+  { 
+    path: "/users/:id/posts/:postId",
+    action: () => {
+      const { id, postId } = router.params;
+      console.log(`User ${id}, Post ${postId}`);
+    }
+  }
+];
+
+// URL with query parameters: #/search?q=test&page=1
+router.navigateTo("/search?q=test&page=1");
+console.log(router.query); // { q: "test", page: "1" }
+```
+
+#### Best Practices for Routing
+
+1. Initialize router before mounting the app
+2. Use route actions to update application state
+3. Keep routes simple and descriptive
+4. Handle 404 cases with a catch-all route
+5. Use router.subscribe() for global route change handling
 
 ## API Reference
 
