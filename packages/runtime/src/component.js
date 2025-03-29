@@ -4,8 +4,12 @@ import { DOM_TYPES, extractChildren } from './o.js'
 import { patchDOM } from './patch-dom.js'
 import { hasOwnProperty } from './utils/objects.js'
 import { Dispatcher } from './dispatcher.js'
-export function defineComponent({ render, state, ...methods }) { // --1--
-    class Component {
+export function defineComponent(options) {
+    if (typeof options === 'function') {
+        options = { render: options };
+    }
+    
+    return class Component {
         #vdom = null
         #hostEl = null
         #isMounted = false
@@ -16,7 +20,7 @@ export function defineComponent({ render, state, ...methods }) { // --1--
         constructor(props = {}, eventHandlers = {},
             parentComponent = null,) {
             this.props = props
-            this.state = state ? state(props) : {}
+            this.state = options.state ? options.state(props) : {}
             this.#eventHandlers = eventHandlers
             this.#parentComponent = parentComponent
         }
@@ -51,16 +55,16 @@ export function defineComponent({ render, state, ...methods }) { // --1--
             this.state = { ...this.state, ...state }
             this.#patch()
         }
-        render() { // --3--
-            return render.call(this)
+        render() {
+            return options.render.call(this)
         }
 
         mount(hostEl, index = null) {
             if (this.#isMounted) {
                 throw new Error('Component is already mounted')
             }
-            this.#vdom = this.render() // --4--
-            mountDOM(this.#vdom, hostEl, index, this) // --5--
+            this.#vdom = this.render()
+            mountDOM(this.#vdom, hostEl, index, this)
             this.#wireEventHandlers()
 
             this.#hostEl = hostEl
@@ -105,13 +109,4 @@ export function defineComponent({ render, state, ...methods }) { // --1--
             this.#dispatcher.dispatch(eventName, payload)
             }
     }
-    for (const methodName in methods) {
-        if (hasOwnProperty(Component, methodName)) {
-            throw new Error(
-                `Method "${methodName}()" already exists in the component.`
-            )
-        }
-        Component.prototype[methodName] = methods[methodName]
-    }
-    return Component // --7--
 }

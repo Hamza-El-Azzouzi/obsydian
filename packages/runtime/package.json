@@ -1,6 +1,6 @@
 {
   "name": "obsydian",
-  "version": "4.0.1",
+  "version": "5.0.2",
   "main": "dist/obsydian.js",
   "module": "dist/obsydian.js",
   "scripts": {
